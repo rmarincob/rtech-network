@@ -472,3 +472,37 @@ networks:
   rtech-network:
     name: rtech-network
     driver: bridge
+volumes:
+  orderer0_rtech_com:
+    name: orderer0_rtech_com
+    driver: local
+  orderer1_rtech_com:
+    name: orderer1_rtech_com
+    driver: local
+  orderer2_rtech_com:
+    name: orderer2_rtech_com
+    driver: local
+  couchdb_peer0_doctor_rtech_com:
+    name: couchdb_peer0_doctor_rtech_com
+    driver: local
+  peer0_doctor_rtech_com:
+    name: peer0_doctor_rtech_com
+    driver: local
+  couchdb_peer1_doctor_rtech_com:
+    name: couchdb_peer1_doctor_rtech_com
+    driver: local
+  peer1_doctor_rtech_com:
+    name: peer1_doctor_rtech_com
+    driver: local
+  couchdb_peer0_patient_rtech_com:
+    name: couchdb_peer0_patient_rtech_com
+    driver: local
+  peer0_patient_rtech_com:
+    name: peer0_patient_rtech_com
+    driver: local
+  couchdb_peer1_patient_rtech_com:
+    name: couchdb_peer1_patient_rtech_com
+    driver: local
+  peer1_patient_rtech_com:
+    name: peer1_patient_rtech_com
+    driver: local
