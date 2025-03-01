@@ -24,7 +24,7 @@ services:
       - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
       - ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer0.rtech.com/msp:/var/hyperledger/orderer/msp
       - ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer0.rtech.com/tls:/var/hyperledger/orderer/tls
-      - orderer0.rtech.com:/var/hyperledger/production/orderer
+      - orderer0_rtech_com:/var/hyperledger/production/orderer
     ports:
       - 7060:7050
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
@@ -57,7 +57,7 @@ services:
       - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
       - ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer1.rtech.com/msp:/var/hyperledger/orderer/msp
       - ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer1.rtech.com/tls:/var/hyperledger/orderer/tls
-      - orderer1.rtech.com:/var/hyperledger/production/orderer
+      - orderer1_rtech_com:/var/hyperledger/production/orderer
     ports:
       - 7070:7050
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
@@ -90,7 +90,7 @@ services:
       - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
       - ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer2.rtech.com/msp:/var/hyperledger/orderer/msp
       - ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer2.rtech.com/tls:/var/hyperledger/orderer/tls
-      - orderer2.rtech.com:/var/hyperledger/production/orderer
+      - orderer2_rtech_com:/var/hyperledger/production/orderer
     ports:
       - 7080:7050
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
@@ -166,7 +166,7 @@ services:
     ports:
       - 5984:5984
     volumes:
-      - couchdb.peer0.doctor.rtech.com:/opt/couchdb/data
+      - couchdb_peer0_doctor_rtech_com:/opt/couchdb/data
     networks:
       - rtech-network
 
@@ -212,7 +212,7 @@ services:
       - /var/run/:/host/var/run/
       - ./crypto-config/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/msp:/etc/hyperledger/fabric/msp
       - ./crypto-config/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls:/etc/hyperledger/fabric/tls
-      - peer0.doctor.rtech.com:/var/hyperledger/production
+      - peer0_doctor_rtech_com:/var/hyperledger/production
     ports:
       - 7010:7010
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
@@ -229,7 +229,7 @@ services:
     ports:
       - 5985:5984
     volumes:
-      - couchdb.peer1.doctor.rtech.com:/opt/couchdb/data
+      - couchdb_peer1_doctor_rtech_com:/opt/couchdb/data
     networks:
       - rtech-network
 
@@ -275,7 +275,7 @@ services:
       - /var/run/:/host/var/run/
       - ./crypto-config/peerOrganizations/doctor.rtech.com/peers/peer1.doctor.rtech.com/msp:/etc/hyperledger/fabric/msp
       - ./crypto-config/peerOrganizations/doctor.rtech.com/peers/peer1.doctor.rtech.com/tls:/etc/hyperledger/fabric/tls
-      - peer1.doctor.rtech.com:/var/hyperledger/production
+      - peer1_doctor_rtech_com:/var/hyperledger/production
     ports:
       - 7011:7011
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
@@ -351,7 +351,7 @@ services:
     ports:
       - 5986:5984
     volumes:
-      - couchdb.peer0.patient.rtech.com:/opt/couchdb/data
+      - couchdb_peer0_patient_rtech_com:/opt/couchdb/data
     networks:
       - rtech-network
 
@@ -397,7 +397,7 @@ services:
       - /var/run/:/host/var/run/
       - ./crypto-config/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/msp:/etc/hyperledger/fabric/msp
       - ./crypto-config/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/tls:/etc/hyperledger/fabric/tls
-      - peer0.patient.rtech.com:/var/hyperledger/production
+      - peer0_patient_rtech_com:/var/hyperledger/production
     ports:
       - 7012:7012
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
@@ -414,7 +414,7 @@ services:
     ports:
       - 5987:5984
     volumes:
-      - couchdb.peer1.patient.rtech.com:/opt/couchdb/data
+      - couchdb_peer1_patient_rtech_com:/opt/couchdb/data
     networks:
       - rtech-network
 
@@ -460,7 +460,7 @@ services:
       - /var/run/:/host/var/run/
       - ./crypto-config/peerOrganizations/patient.rtech.com/peers/peer1.patient.rtech.com/msp:/etc/hyperledger/fabric/msp
       - ./crypto-config/peerOrganizations/patient.rtech.com/peers/peer1.patient.rtech.com/tls:/etc/hyperledger/fabric/tls
-      - peer1.patient.rtech.com:/var/hyperledger/production
+      - peer1_patient_rtech_com:/var/hyperledger/production
     ports:
       - 7013:7013
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
