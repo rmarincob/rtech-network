@@ -1,0 +1,474 @@
+services:
+  orderer0.rtech.com:
+    image: hyperledger/fabric-orderer:2.5.11
+    container_name: orderer0.rtech.com
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      # - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # GENESIS FILE CONFIG
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      # TLS CONFIGURATION
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      # TLS CLUSTER CONFIGURATION
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+    volumes:
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer0.rtech.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer0.rtech.com/tls:/var/hyperledger/orderer/tls
+      - orderer0.rtech.com:/var/hyperledger/production/orderer
+    ports:
+      - 7060:7050
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    networks:
+      - rtech-network
+
+  orderer1.rtech.com:
+    image: hyperledger/fabric-orderer:2.5.11
+    container_name: orderer1.rtech.com
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      # - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # GENESIS FILE CONFIG
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      # TLS CONFIGURATION
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      # TLS CLUSTER CONFIGURATION
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+    volumes:
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer1.rtech.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer1.rtech.com/tls:/var/hyperledger/orderer/tls
+      - orderer1.rtech.com:/var/hyperledger/production/orderer
+    ports:
+      - 7070:7050
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    networks:
+      - rtech-network
+
+  orderer2.rtech.com:
+    image: hyperledger/fabric-orderer:2.5.11
+    container_name: orderer2.rtech.com
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      # - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # GENESIS FILE CONFIG
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      # TLS CONFIGURATION
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      # TLS CLUSTER CONFIGURATION
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+    volumes:
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer2.rtech.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer2.rtech.com/tls:/var/hyperledger/orderer/tls
+      - orderer2.rtech.com:/var/hyperledger/production/orderer
+    ports:
+      - 7080:7050
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    networks:
+      - rtech-network
+
+  ca.doctor.rtech.com:
+    image: hyperledger/fabric-ca:1.5.14
+    container_name: ca.doctor.rtech.com
+    environment:
+      # - FABRIC_LOGGING_SPEC=INFO
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.doctor.rtech.com
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.doctor.rtech.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.doctor.rtech.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
+    ports:
+      - 7071:7054
+    command: sh -c 'fabric-ca-server start -b ${CA_USERNAME}:${CA_PASSWORD}'
+    volumes:
+      - ./crypto-config/peerOrganizations/doctor.rtech.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    networks:
+      - rtech-network
+
+  cli.doctor.rtech.com:
+    image: hyperledger/fabric-tools
+    container_name: cli.doctor.rtech.com
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_ID=cli.doctor.rtech.com
+      - CORE_CHAINCODE_KEEPALIVE=10
+      # MSP CONFIGURATION
+      - CORE_PEER_LOCALMSPID=doctorMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.rtech.com/users/Admin@doctor.rtech.com/msp
+      - CORE_PEER_ADDRESS=peer0.doctor.rtech.com:7010
+      # TLS CONFIGURATION 
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls/ca.crt
+      - TLS_CA_CERT_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls/ca.crt
+    volumes:
+      - /var/run/:/host/var/run/
+      - ../chaincodes/:/opt/gopath/src/github.com/chaincodes
+      - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+      - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    depends_on:
+      - orderer0.rtech.com
+      - orderer1.rtech.com
+      - orderer2.rtech.com
+      - peer0.doctor.rtech.com
+      - peer1.doctor.rtech.com
+      - peer0.patient.rtech.com
+      - peer1.patient.rtech.com
+    networks:
+      - rtech-network
+
+  couchdb.peer0.doctor.rtech.com:
+    image: couchdb:latest
+    container_name: couchdb.peer0.doctor.rtech.com
+    environment:
+      - COUCHDB_USER=${COUCHDB_USERNAME}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+    ports:
+      - 5984:5984
+    volumes:
+      - couchdb.peer0.doctor.rtech.com:/opt/couchdb/data
+    networks:
+      - rtech-network
+
+  peer0.doctor.rtech.com:
+    image: hyperledger/fabric-peer:2.5.11
+    container_name: peer0.doctor.rtech.com
+    environment:
+      # - FABRIC_CFG_PATH=$PWD
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=rtech-network
+      - CORE_CHAINCODE_LOGGING_LEVEL=INFO
+      - CORE_CHAINCODE_LOGGING_SHIM=INFO
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_GATEWAY_ENABLED=true
+      # PEER CONFIGURATION
+      - CORE_PEER_LOCALMSPID=doctorMSP
+      - CORE_PEER_ID=peer0.doctor.rtech.com
+      - CORE_PEER_ADDRESS=peer0.doctor.rtech.com:7010
+      - CORE_PEER_LISTENADDRESS=peer0.doctor.rtech.com:7010
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0.doctor.rtech.com:7010
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.doctor.rtech.com:7010
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.doctor.rtech.com:7010,peer1.doctor.rtech.com:7011
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.doctor.rtech.com:7050
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.doctor.rtech.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=${COUCHDB_USERNAME}
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=${COUCHDB_PASSWORD}
+      # TLS CONFIGURATION
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+    depends_on:
+      - orderer0.rtech.com
+      - orderer1.rtech.com
+      - orderer2.rtech.com
+      - couchdb.peer0.doctor.rtech.com
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.doctor.rtech.com:/var/hyperledger/production
+    ports:
+      - 7010:7010
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    networks:
+      - rtech-network
+
+  couchdb.peer1.doctor.rtech.com:
+    image: couchdb:latest
+    container_name: couchdb.peer1.doctor.rtech.com
+    environment:
+      - COUCHDB_USER=${COUCHDB_USERNAME}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+    ports:
+      - 5985:5984
+    volumes:
+      - couchdb.peer1.doctor.rtech.com:/opt/couchdb/data
+    networks:
+      - rtech-network
+
+  peer1.doctor.rtech.com:
+    image: hyperledger/fabric-peer:2.5.11
+    container_name: peer1.doctor.rtech.com
+    environment:
+      # - FABRIC_CFG_PATH=$PWD
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=rtech-network
+      - CORE_CHAINCODE_LOGGING_LEVEL=INFO
+      - CORE_CHAINCODE_LOGGING_SHIM=INFO
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_GATEWAY_ENABLED=true
+      # PEER CONFIGURATION
+      - CORE_PEER_LOCALMSPID=doctorMSP
+      - CORE_PEER_ID=peer1.doctor.rtech.com
+      - CORE_PEER_ADDRESS=peer1.doctor.rtech.com:7011
+      - CORE_PEER_LISTENADDRESS=peer1.doctor.rtech.com:7011
+      - CORE_PEER_GOSSIP_ENDPOINT=peer1.doctor.rtech.com:7011
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.doctor.rtech.com:7011
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.doctor.rtech.com:7010,peer1.doctor.rtech.com:7011
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer1.doctor.rtech.com:7050
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer1.doctor.rtech.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=${COUCHDB_USERNAME}
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=${COUCHDB_PASSWORD}
+      # TLS CONFIGURATION
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+    depends_on:
+      - orderer0.rtech.com
+      - orderer1.rtech.com
+      - orderer2.rtech.com
+      - couchdb.peer1.doctor.rtech.com
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/doctor.rtech.com/peers/peer1.doctor.rtech.com/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/doctor.rtech.com/peers/peer1.doctor.rtech.com/tls:/etc/hyperledger/fabric/tls
+      - peer1.doctor.rtech.com:/var/hyperledger/production
+    ports:
+      - 7011:7011
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    networks:
+      - rtech-network
+
+  ca.patient.rtech.com:
+    image: hyperledger/fabric-ca:1.5.14
+    container_name: ca.patient.rtech.com
+    environment:
+      # - FABRIC_LOGGING_SPEC=INFO
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.patient.rtech.com
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.patient.rtech.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.patient.rtech.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
+    ports:
+      - 7081:7054
+    command: sh -c 'fabric-ca-server start -b ${CA_USERNAME}:${CA_PASSWORD}'
+    volumes:
+      - ./crypto-config/peerOrganizations/patient.rtech.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    networks:
+      - rtech-network
+
+  cli.patient.rtech.com:
+    image: hyperledger/fabric-tools
+    container_name: cli.patient.rtech.com
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_ID=cli.patient.rtech.com
+      - CORE_CHAINCODE_KEEPALIVE=10
+      # MSP CONFIGURATION
+      - CORE_PEER_LOCALMSPID=patientMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/patient.rtech.com/users/Admin@patient.rtech.com/msp
+      - CORE_PEER_ADDRESS=peer0.patient.rtech.com:7012
+      # TLS CONFIGURATION 
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/tls/ca.crt
+      - TLS_CA_CERT_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/tls/ca.crt
+    volumes:
+      - /var/run/:/host/var/run/
+      - ../chaincodes/:/opt/gopath/src/github.com/chaincodes
+      - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+      - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    depends_on:
+      - orderer0.rtech.com
+      - orderer1.rtech.com
+      - orderer2.rtech.com
+      - peer0.doctor.rtech.com
+      - peer1.doctor.rtech.com
+      - peer0.patient.rtech.com
+      - peer1.patient.rtech.com
+    networks:
+      - rtech-network
+
+  couchdb.peer0.patient.rtech.com:
+    image: couchdb:latest
+    container_name: couchdb.peer0.patient.rtech.com
+    environment:
+      - COUCHDB_USER=${COUCHDB_USERNAME}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+    ports:
+      - 5986:5984
+    volumes:
+      - couchdb.peer0.patient.rtech.com:/opt/couchdb/data
+    networks:
+      - rtech-network
+
+  peer0.patient.rtech.com:
+    image: hyperledger/fabric-peer:2.5.11
+    container_name: peer0.patient.rtech.com
+    environment:
+      # - FABRIC_CFG_PATH=$PWD
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=rtech-network
+      - CORE_CHAINCODE_LOGGING_LEVEL=INFO
+      - CORE_CHAINCODE_LOGGING_SHIM=INFO
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_GATEWAY_ENABLED=true
+      # PEER CONFIGURATION
+      - CORE_PEER_LOCALMSPID=patientMSP
+      - CORE_PEER_ID=peer0.patient.rtech.com
+      - CORE_PEER_ADDRESS=peer0.patient.rtech.com:7012
+      - CORE_PEER_LISTENADDRESS=peer0.patient.rtech.com:7012
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0.patient.rtech.com:7012
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.patient.rtech.com:7012
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.patient.rtech.com:7012,peer1.patient.rtech.com:7013
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.patient.rtech.com:7050
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.patient.rtech.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=${COUCHDB_USERNAME}
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=${COUCHDB_PASSWORD}
+      # TLS CONFIGURATION
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+    depends_on:
+      - orderer0.rtech.com
+      - orderer1.rtech.com
+      - orderer2.rtech.com
+      - couchdb.peer0.patient.rtech.com
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.patient.rtech.com:/var/hyperledger/production
+    ports:
+      - 7012:7012
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    networks:
+      - rtech-network
+
+  couchdb.peer1.patient.rtech.com:
+    image: couchdb:latest
+    container_name: couchdb.peer1.patient.rtech.com
+    environment:
+      - COUCHDB_USER=${COUCHDB_USERNAME}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+    ports:
+      - 5987:5984
+    volumes:
+      - couchdb.peer1.patient.rtech.com:/opt/couchdb/data
+    networks:
+      - rtech-network
+
+  peer1.patient.rtech.com:
+    image: hyperledger/fabric-peer:2.5.11
+    container_name: peer1.patient.rtech.com
+    environment:
+      # - FABRIC_CFG_PATH=$PWD
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=rtech-network
+      - CORE_CHAINCODE_LOGGING_LEVEL=INFO
+      - CORE_CHAINCODE_LOGGING_SHIM=INFO
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_GATEWAY_ENABLED=true
+      # PEER CONFIGURATION
+      - CORE_PEER_LOCALMSPID=patientMSP
+      - CORE_PEER_ID=peer1.patient.rtech.com
+      - CORE_PEER_ADDRESS=peer1.patient.rtech.com:7013
+      - CORE_PEER_LISTENADDRESS=peer1.patient.rtech.com:7013
+      - CORE_PEER_GOSSIP_ENDPOINT=peer1.patient.rtech.com:7013
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.patient.rtech.com:7013
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.patient.rtech.com:7012,peer1.patient.rtech.com:7013
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer1.patient.rtech.com:7050
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer1.patient.rtech.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=${COUCHDB_USERNAME}
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=${COUCHDB_PASSWORD}
+      # TLS CONFIGURATION
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+    depends_on:
+      - orderer0.rtech.com
+      - orderer1.rtech.com
+      - orderer2.rtech.com
+      - couchdb.peer1.patient.rtech.com
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/patient.rtech.com/peers/peer1.patient.rtech.com/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/patient.rtech.com/peers/peer1.patient.rtech.com/tls:/etc/hyperledger/fabric/tls
+      - peer1.patient.rtech.com:/var/hyperledger/production
+    ports:
+      - 7013:7013
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    networks:
+      - rtech-network
+
+networks:
+  rtech-network:
+    name: rtech-network
+    driver: bridge

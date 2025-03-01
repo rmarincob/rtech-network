@@ -1,0 +1,235 @@
+---
+################################################################################
+#
+#   CAPABILITIES
+#
+################################################################################
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+
+  Orderer: &OrdererCapabilities
+    V2_0: true
+
+  Application: &ApplicationCapabilities
+    V2_5: true
+
+################################################################################
+#
+#   CHANNEL
+#
+################################################################################
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+################################################################################
+#
+#   ORGANIZATIONS
+#
+################################################################################
+Organizations:
+  - &OrdererOrg
+      Name: OrdererOrg
+      ID: OrdererMSP
+      MSPDir: crypto-config/ordererOrganizations/rtech.com/msp
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('OrdererMSP.member')"
+        Writers:
+          Type: Signature
+          Rule: "OR('OrdererMSP.member')"
+        Admins:
+          Type: Signature
+          Rule: "OR('OrdererMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('OrdererMSP.member')"
+      OrdererEndpoints:
+        - orderer0.rtech.com:7050
+        - orderer1.rtech.com:7050
+        - orderer2.rtech.com:7050
+
+  - &doctor
+      Name: doctorMSP
+      ID: doctorMSP
+      MSPDir: crypto-config/peerOrganizations/doctor.rtech.com/msp
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('doctorMSP.admin', 'doctorMSP.peer', 'doctorMSP.client')"
+        Writers:
+          Type: Signature
+          Rule: "OR('doctorMSP.admin', 'doctorMSP.client')"
+        Admins:
+          Type: Signature
+          Rule: "OR('doctorMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('doctorMSP.peer')"
+      AnchorPeers:
+        - Host: peer0.doctor.rtech.com
+          Port: 7010
+        - Host: peer1.doctor.rtech.com
+          Port: 7011
+
+  - &patient
+      Name: patientMSP
+      ID: patientMSP
+      MSPDir: crypto-config/peerOrganizations/patient.rtech.com/msp
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('patientMSP.admin', 'patientMSP.peer', 'patientMSP.client')"
+        Writers:
+          Type: Signature
+          Rule: "OR('patientMSP.admin', 'patientMSP.client')"
+        Admins:
+          Type: Signature
+          Rule: "OR('patientMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('patientMSP.peer')"
+      AnchorPeers:
+        - Host: peer0.patient.rtech.com
+          Port: 7012
+        - Host: peer1.patient.rtech.com
+          Port: 7013
+
+################################################################################
+#
+#   APPLICATION
+#
+################################################################################
+Application: &ApplicationDefaults
+  Organizations:
+
+  Policies: &ApplicationDefaultPolicies
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+################################################################################
+#
+#   ORDERER
+#
+################################################################################
+Orderer: &OrdererDefaults
+  # Orderer Type: The orderer implementation to start.
+  # Available types are "solo", "kafka" and "etcdraft".
+  OrdererType: etcdraft
+
+  Addresses:
+    - orderer0.rtech.com:7050
+    - orderer1.rtech.com:7050
+    - orderer2.rtech.com:7050
+
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 500
+    AbsoluteMaxBytes: 10 MB
+    PreferredMaxBytes: 2 MB
+
+  EtcdRaft:
+    Options:
+      TickInterval: 500ms
+      ElectionTick: 10
+      HeartbeatTick: 1
+      MaxInflightBlocks: 5
+      SnapshotIntervalSize: 20 MB
+
+    Consenters:
+      - Host: orderer0.rtech.com
+        Port: 7050
+        ClientTLSCert: ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer0.rtech.com/tls/server.crt
+        ServerTLSCert: ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer0.rtech.com/tls/server.crt
+      - Host: orderer1.rtech.com
+        Port: 7050
+        ClientTLSCert: ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer1.rtech.com/tls/server.crt
+        ServerTLSCert: ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer1.rtech.com/tls/server.crt
+      - Host: orderer2.rtech.com
+        Port: 7050
+        ClientTLSCert: ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer2.rtech.com/tls/server.crt
+        ServerTLSCert: ./crypto-config/ordererOrganizations/rtech.com/orderers/orderer2.rtech.com/tls/server.crt
+
+  Organizations:
+
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+  Capabilities:
+    <<: *OrdererCapabilities
+
+################################################################################
+#
+#   PROFILES
+#
+################################################################################
+Profiles:
+  RTechGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+      Capabilities:
+        <<: *OrdererCapabilities
+    Consortiums:
+      RTechConsortium:
+        Organizations:
+          - *doctor
+          - *patient
+
+  RTechMediledger:
+    <<: *ChannelDefaults
+    # Orderer:
+    #   <<: *OrdererDefaults
+    #   Organizations:
+    #     - *OrdererOrg
+    #   Capabilities:
+    #     <<: *ApplicationCapabilities
+    Consortium: RTechConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+          - *doctor
+          - *patient
+      Capabilities:
+        <<: *ApplicationCapabilities

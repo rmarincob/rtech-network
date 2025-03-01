@@ -1,0 +1,35 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: rtech.com
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer0
+        SANS:
+          - localhost
+      - Hostname: orderer1
+        SANS:
+          - localhost
+      - Hostname: orderer2
+        SANS:
+          - localhost
+
+PeerOrgs:
+  - Name: doctor
+    Domain: doctor.rtech.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+      SANS:
+        - localhost
+    Users:
+      Count: 1
+
+  - Name: patient
+    Domain: patient.rtech.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+      SANS:
+        - localhost
+    Users:
+      Count: 1
