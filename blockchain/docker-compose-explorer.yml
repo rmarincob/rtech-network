@@ -1,15 +1,3 @@
-volumes:
-  pgdata:
-    name: pgdata
-    driver: local
-  walletstore:
-    name: walletstore
-    driver: local
-
-networks:
-  rtech-network:
-    external: true
-
 services:
   explorerdb.rtech.com:
     image: ghcr.io/hyperledger-labs/explorer-db:latest
@@ -19,11 +7,13 @@ services:
       - DATABASE_DATABASE=${DATABASE_DATABASE}
       - DATABASE_USERNAME=${DATABASE_USERNAME}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-    #healthcheck:
-    #  test: "pg_isready -h localhost -p 5432 -q -U postgres"
-    #  interval: 30s
-    #  timeout: 10s
-    #  retries: 5
+    healthcheck:
+      test: "pg_isready -h localhost -p 5432 -q -U postgres"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ports:
+      - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
@@ -37,22 +27,33 @@ services:
       - DATABASE_HOST=explorerdb.rtech.com
       - DATABASE_DATABASE=${DATABASE_DATABASE}
       - DATABASE_USERNAME=${DATABASE_USERNAME}
-      - DATABASE_PASSWD=${DATABASE_PASSWORD}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - LOG_LEVEL_APP=info
       - LOG_LEVEL_DB=info
       - LOG_LEVEL_CONSOLE=info
       - LOG_CONSOLE_STDOUT=true
       - DISCOVERY_AS_LOCALHOST=false
-      # - EXPLORER_PORT=8080:8080
     volumes:
       - ./config.json:/opt/explorer/app/platform/fabric/config.json
-      - ./connection-profile.json:/opt/explorer/app/platform/fabric/connection-profile/connection-profile.json
+      - ./mediledger.json:/opt/explorer/app/platform/fabric/connection-profile/mediledger.json
       - ./crypto-config:/tmp/crypto
       - walletstore:/opt/explorer/wallet
     ports:
-      - 3000:8080
+      - 8080:8080
     depends_on:
-      - explorerdb.rtech.com:
-          #condition: service_healthy
+      explorerdb.rtech.com:
+        condition: service_healthy
     networks:
       - rtech-network
+
+volumes:
+  pgdata:
+    name: pgdata
+    driver: local
+  walletstore:
+    name: walletstore
+    driver: local
+
+networks:
+  rtech-network:
+    external: true

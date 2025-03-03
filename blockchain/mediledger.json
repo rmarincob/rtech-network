@@ -1,0 +1,95 @@
+{
+    "name": "mediledger",
+    "description": "Connection profile in mediledger network",
+    "version": "1.0.0",
+    "client": {
+        "tlsEnable": true,
+        "enableAuthentication": false,
+        "organization": "doctor",
+        "adminCredential": {
+            "id": "admin",
+            "password": "password"
+        },
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                },
+                "orderer": "300"
+            }
+        }
+    },
+    "channels": {
+        "mediledger": {
+            "peers": {
+                "peer0.doctor.rtech.com": {},
+                "peer1.doctor.rtech.com": {},
+                "peer0.patient.rtech.com": {},
+                "peer1.patient.rtech.com": {}
+            },
+            "connection": {
+                "timeout": {
+                    "peer": {
+                        "endorser": "6000",
+                        "eventHub": "6000",
+                        "eventReg": "6000"
+                    }
+                }
+            }
+        }
+    },
+    "organizations": {
+        "doctor": {
+            "mspid": "doctorMSP",
+            "adminPrivateKey": {
+                "path": "/tmp/crypto/peerOrganizations/doctor.rtech.com/users/Admin@doctor.rtech.com/msp/keystore/priv_sk"
+            },
+            "signedCert": {
+                "path": "/tmp/crypto/peerOrganizations/doctor.rtech.com/users/Admin@doctor.rtech.com/msp/signcerts/Admin@doctor.rtech.com-cert.pem"
+            },
+            "peers": [
+                "peer0.doctor.rtech.com",
+                "peer1.doctor.rtech.com"
+            ]
+        },
+        "patient": {
+            "mspid": "patientMSP",
+            "adminPrivateKey": {
+                "path": "/tmp/crypto/peerOrganizations/patient.rtech.com/users/Admin@patient.rtech.com/msp/keystore/priv_sk"
+            },
+            "signedCert": {
+                "path": "/tmp/crypto/peerOrganizations/patient.rtech.com/users/Admin@patient.rtech.com/msp/signcerts/Admin@patient.rtech.com-cert.pem"
+            },
+            "peers": [
+                "peer0.patient.rtech.com",
+                "peer1.patient.rtech.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.doctor.rtech.com": {
+            "url": "grpcs://peer0.doctor.rtech.com:7010",
+            "tlsCACerts": {
+                "path": "/tmp/crypto/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls/ca.crt"
+            }
+        },
+        "peer1.doctor.rtech.com": {
+            "url": "grpcs://peer1.doctor.rtech.com:7011",
+            "tlsCACerts": {
+                "path": "/tmp/crypto/peerOrganizations/doctor.rtech.com/peers/peer1.doctor.rtech.com/tls/ca.crt"
+            }
+        },
+        "peer0.patient.rtech.com": {
+            "url": "grpcs://peer0.patient.rtech.com:7012",
+            "tlsCACerts": {
+                "path": "/tmp/crypto/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/tls/ca.crt"
+            }
+        },
+        "peer1.patient.rtech.com": {
+            "url": "grpcs://peer1.patient.rtech.com:7013",
+            "tlsCACerts": {
+                "path": "/tmp/crypto/peerOrganizations/patient.rtech.com/peers/peer1.patient.rtech.com/tls/ca.crt"
+            }
+        }
+    }
+}

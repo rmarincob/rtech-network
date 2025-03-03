@@ -1,8 +1,8 @@
 {
     "network-configs": {
-        "connection-profile": {
+        "mediledger": {
             "name": "Mediledger Network Organization",
-            "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile.json"
+            "profile": "/opt/explorer/app/platform/fabric/connection-profile/mediledger.json"
         }
     },
     "license": "Apache-2.0"
