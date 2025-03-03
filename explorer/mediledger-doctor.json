@@ -1,0 +1,72 @@
+{
+    "name": "mediledger-doctor-network",
+    "description": "Connection profile for doctor in mediledger network",
+    "version": "1.0.0",
+    "client": {
+        "organization": "doctor"
+    },
+    "organizations": {
+        "doctor": {
+            "mspid": "doctorMSP",
+            "peers": [
+                "peer0.doctor.rtech.com",
+                "peer1.doctor.rtech.com",
+                "peer0.patient.rtech.com",
+                "peer1.patient.rtech.com"
+            ],
+            "certificateAuthorities": [
+                "ca.doctor.rtech.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.doctor.rtech.com": {
+            "url": "grpcs://localhost:7010",
+            "tlsCACerts": {
+                "path": "../blockchain/crypto-config/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.doctor.rtech.com"
+            }
+        },
+        "peer1.doctor.rtech.com": {
+            "url": "grpcs://localhost:7011",
+            "tlsCACerts": {
+                "path": "../blockchain/crypto-config/peerOrganizations/doctor.rtech.com/peers/peer1.doctor.rtech.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.doctor.rtech.com"
+            }
+        },
+        "peer0.patient.rtech.com": {
+            "url": "grpcs://localhost:7012",
+            "tlsCACerts": {
+                "path": "../blockchain/crypto-config/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.patient.rtech.com"
+            }
+        },
+        "peer1.patient.rtech.com": {
+            "url": "grpcs://localhost:7013",
+            "tlsCACerts": {
+                "path": "../blockchain/crypto-config/peerOrganizations/patient.rtech.com/peers/peer1.patient.rtech.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.patient.rtech.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.doctor.rtech.com": {
+            "url": "http://localhost:7071",
+            "caName": "ca.doctor.rtech.com",
+            "tlsCACerts": {
+                "path": "../blockchain/crypto-config/peerOrganizations/doctor.rtech.com/ca/ca.doctor.rtech.com-cert.pem"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

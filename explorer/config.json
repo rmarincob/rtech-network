@@ -1,0 +1,13 @@
+{
+    "network-configs": {
+        "mediledger-doctor-network": {
+            "name": "Network Organization of Doctor",
+            "profile": "./mediledger-doctor.json"
+        },
+        "mediledger-patient-network": {
+            "name": "Network Organization of Patient",
+            "profile": "./mediledger-patient.json"
+        }
+    },
+    "license": "Apache-2.0"
+}

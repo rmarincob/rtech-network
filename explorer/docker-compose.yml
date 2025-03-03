@@ -1,0 +1,5 @@
+services:
+
+networks:
+  rtech-network:
+    external: true
