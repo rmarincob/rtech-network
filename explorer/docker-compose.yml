@@ -46,7 +46,7 @@ services:
       - EXPLORER_PORT=${EXPLORER_PORT:-8080}
     volumes:
       - ./config.json:/opt/explorer/app/platform/fabric/config.json
-      - ./rtech-network.json:/opt/explorer/app/platform/fabric/rtech-network.json
+      - ./rtech-network.json:/opt/explorer/app/platform/fabric/connection-profile
       - ../blockchain/crypto-config:/tmp/crypto
       - walletstore:/opt/explorer/wallet
     ports:
