@@ -1,6 +1,6 @@
 {
-    "name": "fablo-test-network-patient",
-    "description": "Connection profile for patient in Fablo network",
+    "name": "mediledger-patient-network",
+    "description": "Connection profile for patient in mediledger network",
     "version": "1.0.0",
     "client": {
         "organization": "patient"
@@ -21,36 +21,36 @@
     },
     "peers": {
         "peer0.doctor.rtech.com": {
-            "url": "grpcs://localhost:7041",
+            "url": "grpcs://localhost:7010",
             "tlsCACerts": {
-                "path": "/home/kmarin/go/src/github.com/rmarincob/fablo-network/fablo-target/fabric-config/crypto-config/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls/ca.crt"
+                "path": "../blockchain/crypto-config/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "peer0.doctor.rtech.com"
             }
         },
         "peer1.doctor.rtech.com": {
-            "url": "grpcs://localhost:7042",
+            "url": "grpcs://localhost:7011",
             "tlsCACerts": {
-                "path": "/home/kmarin/go/src/github.com/rmarincob/fablo-network/fablo-target/fabric-config/crypto-config/peerOrganizations/doctor.rtech.com/peers/peer1.doctor.rtech.com/tls/ca.crt"
+                "path": "../blockchain/crypto-config/peerOrganizations/doctor.rtech.com/peers/peer1.doctor.rtech.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "peer1.doctor.rtech.com"
             }
         },
         "peer0.patient.rtech.com": {
-            "url": "grpcs://localhost:7061",
+            "url": "grpcs://localhost:7012",
             "tlsCACerts": {
-                "path": "/home/kmarin/go/src/github.com/rmarincob/fablo-network/fablo-target/fabric-config/crypto-config/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/tls/ca.crt"
+                "path": "../blockchain/crypto-config/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "peer0.patient.rtech.com"
             }
         },
         "peer1.patient.rtech.com": {
-            "url": "grpcs://localhost:7062",
+            "url": "grpcs://localhost:7013",
             "tlsCACerts": {
-                "path": "/home/kmarin/go/src/github.com/rmarincob/fablo-network/fablo-target/fabric-config/crypto-config/peerOrganizations/patient.rtech.com/peers/peer1.patient.rtech.com/tls/ca.crt"
+                "path": "../blockchain/crypto-config/peerOrganizations/patient.rtech.com/peers/peer1.patient.rtech.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "peer1.patient.rtech.com"
@@ -59,10 +59,10 @@
     },
     "certificateAuthorities": {
         "ca.patient.rtech.com": {
-            "url": "https://localhost:7060",
+            "url": "http://localhost:7081",
             "caName": "ca.patient.rtech.com",
             "tlsCACerts": {
-                "path": "/home/kmarin/go/src/github.com/rmarincob/fablo-network/fablo-target/fabric-config/crypto-config/peerOrganizations/patient.rtech.com/ca/ca.patient.rtech.com-cert.pem"
+                "path": "../blockchain/crypto-config/peerOrganizations/patient.rtech.com/ca/ca.patient.rtech.com-cert.pem"
             },
             "httpOptions": {
                 "verify": false
