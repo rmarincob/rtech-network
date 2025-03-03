@@ -42,10 +42,10 @@
         "doctor": {
             "mspid": "doctorMSP",
             "adminPrivateKey": {
-				"path": "../blockchain/crypto-config/peerOrganizations/doctor.rtech.com/users/Admin@doctor.rtech.com/msp/keystore/priv_sk"
+				"path": "/tmp/crypto/peerOrganizations/doctor.rtech.com/users/Admin@doctor.rtech.com/msp/keystore/priv_sk"
 			},
             "signedCert": {
-				"path": "../blockchain/crypto-config/peerOrganizations/doctor.rtech.com/users/Admin@doctor.rtech.com/msp/signcerts/Admin@doctor.rtech.com-cert.pem"
+				"path": "/tmp/crypto/peerOrganizations/doctor.rtech.com/users/Admin@doctor.rtech.com/msp/signcerts/Admin@doctor.rtech.com-cert.pem"
 			},
             "peers": [
                 "peer0.doctor.rtech.com",
@@ -60,10 +60,10 @@
         "patient": {
             "mspid": "patientMSP",
             "adminPrivateKey": {
-				"path": "../blockchain/crypto-config/peerOrganizations/patient.rtech.com/users/Admin@patient.rtech.com/msp/keystore/priv_sk"
+				"path": "/tmp/crypto/peerOrganizations/patient.rtech.com/users/Admin@patient.rtech.com/msp/keystore/priv_sk"
 			},
             "signedCert": {
-				"path": "../blockchain/crypto-config/peerOrganizations/patient.rtech.com/users/Admin@patient.rtech.com/msp/signcerts/Admin@patient.rtech.com-cert.pem"
+				"path": "/tmp/crypto/peerOrganizations/patient.rtech.com/users/Admin@patient.rtech.com/msp/signcerts/Admin@patient.rtech.com-cert.pem"
 			},
             "peers": [
                 "peer0.doctor.rtech.com",
@@ -80,7 +80,7 @@
         "orderer0.rtech.com": {
             "url": "grpcs://localhost:7060",
             "tlsCACerts": {
-                "path": "../blockchain/crypto-config/ordererOrganizations/rtech.com/orderers/orderer0.rtech.com/tls/ca.crt"
+                "path": "/tmp/crypto/ordererOrganizations/rtech.com/orderers/orderer0.rtech.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "orderer0.rtech.com"
@@ -89,7 +89,7 @@
         "orderer1.rtech.com": {
             "url": "grpcs://localhost:7070",
             "tlsCACerts": {
-                "path": "../blockchain/crypto-config/ordererOrganizations/rtech.com/orderers/orderer1.rtech.com/tls/ca.crt"
+                "path": "/tmp/crypto/ordererOrganizations/rtech.com/orderers/orderer1.rtech.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "orderer1.rtech.com"
@@ -98,7 +98,7 @@
         "orderer2.rtech.com": {
             "url": "grpcs://localhost:7080",
             "tlsCACerts": {
-                "path": "../blockchain/crypto-config/ordererOrganizations/rtech.com/orderers/orderer2.rtech.com/tls/ca.crt"
+                "path": "/tmp/crypto/ordererOrganizations/rtech.com/orderers/orderer2.rtech.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "orderer2.rtech.com"
@@ -109,7 +109,7 @@
         "peer0.doctor.rtech.com": {
             "url": "grpcs://localhost:7010",
             "tlsCACerts": {
-                "path": "../blockchain/crypto-config/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls/ca.crt"
+                "path": "/tmp/crypto/peerOrganizations/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "peer0.doctor.rtech.com"
@@ -118,7 +118,7 @@
         "peer1.doctor.rtech.com": {
             "url": "grpcs://localhost:7011",
             "tlsCACerts": {
-                "path": "../blockchain/crypto-config/peerOrganizations/doctor.rtech.com/peers/peer1.doctor.rtech.com/tls/ca.crt"
+                "path": "/tmp/crypto/peerOrganizations/doctor.rtech.com/peers/peer1.doctor.rtech.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "peer1.doctor.rtech.com"
@@ -127,7 +127,7 @@
         "peer0.patient.rtech.com": {
             "url": "grpcs://localhost:7012",
             "tlsCACerts": {
-                "path": "../blockchain/crypto-config/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/tls/ca.crt"
+                "path": "/tmp/crypto/peerOrganizations/patient.rtech.com/peers/peer0.patient.rtech.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "peer0.patient.rtech.com"
@@ -136,7 +136,7 @@
         "peer1.patient.rtech.com": {
             "url": "grpcs://localhost:7013",
             "tlsCACerts": {
-                "path": "../blockchain/crypto-config/peerOrganizations/patient.rtech.com/peers/peer1.patient.rtech.com/tls/ca.crt"
+                "path": "/tmp/crypto/peerOrganizations/patient.rtech.com/peers/peer1.patient.rtech.com/tls/ca.crt"
             },
             "grpcOptions": {
                 "ssl-target-name-override": "peer1.patient.rtech.com"
@@ -148,7 +148,7 @@
             "url": "https://localhost:7071",
             "caName": "ca.doctor.rtech.com",
             "tlsCACerts": {
-                "path": "../blockchain/crypto-config/peerOrganizations/doctor.rtech.com/ca/ca.doctor.rtech.com-cert.pem"
+                "path": "/tmp/crypto/peerOrganizations/doctor.rtech.com/ca/ca.doctor.rtech.com-cert.pem"
             },
             "httpOptions": {
                 "verify": false
@@ -158,7 +158,7 @@
             "url": "https://localhost:7081",
             "caName": "ca.patient.rtech.com",
             "tlsCACerts": {
-                "path": "../blockchain/crypto-config/peerOrganizations/patient.rtech.com/ca/ca.patient.rtech.com-cert.pem"
+                "path": "/tmp/crypto/peerOrganizations/patient.rtech.com/ca/ca.patient.rtech.com-cert.pem"
             },
             "httpOptions": {
                 "verify": false
