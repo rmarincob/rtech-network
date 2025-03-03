@@ -3,11 +3,50 @@
     "description": "Connection profile for patient in mediledger network",
     "version": "1.0.0",
     "client": {
-        "organization": "patient"
+        "tlsEnable": true,
+        "enableAuthentication": false,
+        "organization": "patient",
+        "adminCredential": {
+            "id": "admin",
+            "password": "password"
+        },
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                },
+                "orderer": "300"
+            }
+        }
+    },
+    "channels": {
+        "mediledger": {
+            "peers": {
+                "peer0.doctor.rtech.com": {},
+                "peer1.doctor.rtech.com": {},
+                "peer0.patient.rtech.com": {},
+                "peer1.patient.rtech.com": {}
+            },
+            "connection": {
+                "timeout": {
+                    "peer": {
+                        "endorser": "300",
+                        "eventHub": "300",
+                        "eventReg": "300"
+                    }
+                }
+            }
+        }
     },
     "organizations": {
         "patient": {
             "mspid": "patientMSP",
+            "adminPrivateKey": {
+				"path": "../blockchain/crypto-config/peerOrganizations/patient.rtech.com/users/Admin@patient.rtech.com/msp/keystore/priv_sk"
+			},
+            "signedCert": {
+				"path": "../blockchain/crypto-config/peerOrganizations/patient.rtech.com/users/Admin@patient.rtech.com/msp/signcerts/Admin@patient.rtech.com-cert.pem"
+			},
             "peers": [
                 "peer0.doctor.rtech.com",
                 "peer1.doctor.rtech.com",
