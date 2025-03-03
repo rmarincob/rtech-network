@@ -1,0 +1,42 @@
+services:
+  apirest.doctor.rtech.com:
+    container_name: apirest.doctor.rtech.com
+    image: ghcr.io/fablo-io/fablo-rest:latest
+    environment:
+      - PORT=8000
+      - MSP_ID=doctorMSP
+      - FABRIC_CA_URL=https://ca.doctor.rtech.com:7054
+      - FABRIC_CA_NAME=ca.doctor.rtech.com
+      - AS_LOCALHOST=false
+      - DISCOVERY_URLS=grpcs://peer0.doctor.rtech.com:7010,grpcs://peer1.doctor.rtech.com:7011,grpcs://peer0.patient.rtech.com:7012,grpcs://peer1.patient.rtech.com:7013
+      - DISCOVERY_TLS_CA_CERT_FILES=/crypto/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls/ca.crt,/crypto/doctor.rtech.com/peers/peer1.doctor.rtech.com/tls/ca.crt,/crypto/patient.rtech.com/peers/peer0.patient.rtech.com/tls/ca.crt,/crypto/patient.rtech.com/peers/peer1.patient.rtech.com/tls/ca.crt
+      - HFC_LOGGING={"error":"console","warn":"console","info":"console"}
+    volumes:
+      - ./crypto-config/peerOrganizations:/crypto:ro
+    ports:
+      - 8801:8000
+    networks:
+      - rtech-network
+
+  apirest.patient.rtech.com:
+    container_name: apirest.patient.rtech.com
+    image: ghcr.io/fablo-io/fablo-rest:latest
+    environment:
+      - PORT=8000
+      - MSP_ID=patientMSP
+      - FABRIC_CA_URL=https://ca.patient.rtech.com:7054
+      - FABRIC_CA_NAME=ca.patient.rtech.com
+      - AS_LOCALHOST=false
+      - DISCOVERY_URLS=grpcs://peer0.doctor.rtech.com:7010,grpcs://peer1.doctor.rtech.com:7011,grpcs://peer0.patient.rtech.com:7012,grpcs://peer1.patient.rtech.com:7013
+      - DISCOVERY_TLS_CA_CERT_FILES=/crypto/doctor.rtech.com/peers/peer0.doctor.rtech.com/tls/ca.crt,/crypto/doctor.rtech.com/peers/peer1.doctor.rtech.com/tls/ca.crt,/crypto/patient.rtech.com/peers/peer0.patient.rtech.com/tls/ca.crt,/crypto/patient.rtech.com/peers/peer1.patient.rtech.com/tls/ca.crt
+      - HFC_LOGGING={"error":"console","warn":"console","info":"console"}
+    volumes:
+      - ./crypto-config/peerOrganizations:/crypto:ro
+    ports:
+      - 8802:8000
+    networks:
+      - rtech-network
+
+networks:
+  rtech-network:
+    external: true
