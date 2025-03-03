@@ -1,5 +1,58 @@
-services:
+volumes:
+  pgdata:
+    name: pgdata
+    driver: local
+  walletstore:
+    name: walletstore
+    driver: local
 
 networks:
   rtech-network:
     external: true
+
+services:
+  explorerdb.rtech.com:
+    image: ghcr.io/hyperledger-labs/explorer-db:latest
+    container_name: explorerdb.rtech.com
+    hostname: explorerdb.rtech.com
+    environment:
+      - DATABASE_DATABASE=${DATABASE_DATABASE}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+    healthcheck:
+      test: "pg_isready -h localhost -p 5432 -q -U postgres"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - rtech-network
+
+  explorer.rtech.com:
+    image: ghcr.io/hyperledger-labs/explorer:latest
+    container_name: explorer.rtech.com
+    hostname: explorer.rtech.com
+    environment:
+      - DATABASE_HOST=explorerdb.rtech.com
+      - DATABASE_DATABASE=${DATABASE_DATABASE}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWD=${DATABASE_PASSWORD}
+      - LOG_LEVEL_APP=info
+      - LOG_LEVEL_DB=info
+      - LOG_LEVEL_CONSOLE=info
+      - LOG_CONSOLE_STDOUT=true
+      - DISCOVERY_AS_LOCALHOST=false
+      - EXPLORER_PORT=${EXPLORER_PORT:-8080}
+    volumes:
+      - ./config.json:/opt/explorer/app/platform/fabric/config.json
+      - ./rtech-network.json:/opt/explorer/app/platform/fabric/rtech-network.json
+      - ../blockchain/crypto-config:/tmp/crypto
+      - walletstore:/opt/explorer/wallet
+    ports:
+      - ${EXPLORER_PORT:-8080}:${EXPLORER_PORT:-8080}
+    depends_on:
+      explorerdb.rtech.com:
+        condition: service_healthy
+    networks:
+      - rtech-network
