@@ -5,22 +5,13 @@ const crypto = require("crypto");
 const { faker } = require('@faker-js/faker');
 const { v4: uuidv4 } = require('uuid');
 
-const Users = require("./entities/Users");
-const { AppDataSource } = require('./database/postgres');
-
 class MCContract extends Contract {
   constructor() {
     super("MCContract");
   }
 
   async instantiate() {
-    await AppDataSource.initialize().then(() => {
-      console.log('Connection to the DB established successfully.');
-    }).catch((error) => console.error(`Error while connecting to PostgreSQL: ${error}`));
-  }
-
-  generateEncryptionKey() {
-    return crypto.randomBytes(32).toString("hex");
+    // function that will be invoked on chaincode instantiation
   }
 
   encryptData(data, key) {
@@ -33,8 +24,8 @@ class MCContract extends Contract {
     return `${iv.toString("hex")}:${encrypted}`;
   }
 
-  decryptData(encryptedData, key) {
-    const [iv, encrypted] = encryptedData.split(":");
+  decryptData(data, key) {
+    const [iv, encrypted] = data.split(":");
 
     const decipher = crypto.createDecipheriv("aes-256-cbc", Buffer.from(key, "hex"), Buffer.from(iv, "hex"));
     let decrypted = decipher.update(encrypted, "hex", "utf8");
@@ -56,32 +47,16 @@ class MCContract extends Contract {
   /////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////// PATIENT RELATED CHAINCODE /////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////
-  async getPatient(ctx, dni) {
-    const userPg = await Users.findOne({ where: { document: dni } });
-
-    const dniMask = generateMaskValue(dni, 2, 3)
+  async getPatient(ctx, key, dniMask) {
     const buffer = await ctx.stub.getState(dniMask);
     if (!buffer || !buffer.length)
       return { success: false, message: `The patient with ID ${patientId} does not exist` };
 
-    const payload = JSON.parse(this.decryptData(buffer.toString(), userPg.encryptionKey));
+    const payload = JSON.parse(this.decryptData(buffer.toString(), key));
     return { success: true, payload };
   }
 
-  async setPatient(ctx, dni, email, birthday, gender, bloodType, height) {
-    let encryptionKey = this.generateEncryptionKey()
-
-    const userPg = await Users.findOne({ where: { document: dni } });
-    if (userPg) {
-      encryptionKey = userPg.encryptionKey
-    } else {
-      const user = new Users();
-      user.document = dni;
-      user.encryptionKey = encryptionKey;
-
-      await user.save()
-    }
-
+  async setPatient(ctx, key, dni, email, birthday, gender, bloodType, height) {
     const dniMask = generateMaskValue(dni, 2, 3)
     const emailMask = generateMaskValue(email, 3, 4, 'x')
 
@@ -102,39 +77,25 @@ class MCContract extends Contract {
       medicalRecords: [],
     };
 
-    const buffer = Buffer.from(this.encryptData(JSON.stringify(newPatient), encryptionKey));
-    await ctx.stub.putState(dniMask, buffer);
+    const buffer = Buffer.from(JSON.stringify(newPatient));
+    await ctx.stub.putState(dniMask, this.encryptData(buffer, key));
 
     const message = `Patient ${dni} is registered successfully!`;
     return { success: true, message };
   }
 
+  async setPatient(ctx, dniMask) {
+    const buffer = await ctx.stub.getState(dniMask);
+    if (!buffer || !buffer.length)
+      return { success: false, message: `The patient with ID ${patientId} does not exist` };
+
+    await ctx.stub.deleteState(assetId);
+    return `The patient ${assetId} deleted successfully!`;
+  }
+
   /////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////// DOCTOR RELATED CHAINCODE //////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////
-  async getAllDoctors(ctx) {
-    const allResults = [];
-
-    const iterator = await ctx.stub.getStateByRange("", "");
-    let result = await iterator.next();
-
-    while (!result.done) {
-      const strValue = Buffer.from(result.value.value.toString()).toString("utf8");
-
-      let record;
-      try {
-        record = JSON.parse(strValue);
-      } catch (err) {
-        console.log(`getAllDoctors: ${err}`)
-        record = strValue;
-      }
-      allResults.push(record);
-      result = await iterator.next();
-    }
-
-    return { success: true, datasource: JSON.stringify(allResults) };
-  }
-
   async getDoctor(ctx, dni) {
     const buffer = await ctx.stub.getState(dni);
 
@@ -179,15 +140,13 @@ class MCContract extends Contract {
     return { success: true, payload }
   }
 
-  async setPrescription(ctx, doctorDni, patientDni, diagnosis, medicines, createdAt) {
+  async setPrescription(ctx, key, doctorDni, patientDni, diagnosis, medicines, createdAt) {
     const recordId = uuidv4();
 
-    const userPg = await Users.findOne({ where: { document: patientDni } });
-    const dniMask = generateMaskValue(dni, 2, 3)
     const newPrescription = {
       recordId,
       doctorDni,
-      patientDni: dniMask,
+      patientDni,
       diagnosis,
       medicines: JSON.stringify(medicines),
       createdAt,
@@ -197,12 +156,12 @@ class MCContract extends Contract {
     await ctx.stub.putState(recordId, buffer);
 
     // update patient's medical records
-    const patient = await this.getPatient(ctx, patientDni);
+    const patient = await this.getPatient(ctx, key, patientDni);
     if (!patient.success) return patient;
 
     patient.payload.medicalRecords.push(newPrescription);
-    const patientBuffer = Buffer.from(this.encryptData(JSON.stringify(patient.payload), userPg.encryptionKey));
-    await ctx.stub.putState(dniMask, patientBuffer);
+    const patientBuffer = Buffer.from(JSON.stringify(patient.payload));
+    await ctx.stub.putState(patientDni, this.encryptData(patientBuffer, key));
 
     // update doctor's prescriptions
     const doctor = await this.getDoctor(ctx, doctorDni);
