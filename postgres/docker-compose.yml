@@ -1,0 +1,29 @@
+services:
+  postgresql.rtech.com:
+    image: postgres:14
+    container_name: postgresql.rtech.com
+    restart: always
+    environment:
+      - TZ=${TZ}
+      - PGTZ=${PGTZ}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_HOST_AUTH_METHOD=${POSTGRES_HOST_AUTH_METHOD}
+      - POSTGRES_INITDB_ARGS=--encoding=UTF8 --locale=en_US.UTF-8 --auth=md5
+    volumes:
+      - postgresql_rtech_com:/var/lib/postgresql/data
+      - ./init_db.sql:/docker-entrypoint-initdb.d/initdb.sql
+    ports:
+      - 5432:5432
+    networks:
+      - rtech-network
+
+volumes:
+  postgresql_rtech_com:
+    name: postgresql_rtech_com
+    driver: local
+
+networks:
+  rtech-network:
+    external: true
