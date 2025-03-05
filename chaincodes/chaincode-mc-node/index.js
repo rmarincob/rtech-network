@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const { Contract } = require("fabric-contract-api");
 const crypto = require("crypto");
 const { faker } = require('@faker-js/faker');
