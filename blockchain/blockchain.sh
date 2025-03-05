@@ -12,11 +12,11 @@ up() {
     configtxgen -profile RTechMediledger -outputAnchorPeersUpdate ./channel-artifacts/doctorMSPAnchors.tx -channelID mediledger -asOrg doctorMSP
     configtxgen -profile RTechMediledger -outputAnchorPeersUpdate ./channel-artifacts/patientMSPAnchors.tx -channelID mediledger -asOrg patientMSP
     echo  "GENERATE CONTAINERS"
-    docker compose -f docker-compose.yml --env-file .env.production up -d
+    docker compose -f docker-compose.yml --env-file ../.env.production up -d
 }
 
 down() {
-    docker compose -f docker-compose.yml --env-file .env.production down -v
+    docker compose -f docker-compose.yml --env-file ../.env.production down -v
     rm -rf ./crypto-config
     rm -rf ./channel-artifacts/*
 }
