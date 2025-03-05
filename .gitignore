@@ -1,5 +1,6 @@
 blockchain/channel-artifacts/*
 blockchain/crypto-config/*
-blockchain/.env.production
+.env.production
 
 chaincodes/chaincode-mc-node/node_modules/*
+chaincodes/chaincode-mc-node/.env
