@@ -22,9 +22,20 @@ class MCContract extends Contract {
     let result = await iterator.next();
     while (!result.done) {
       const key = result.value.key
-      if (result.value && key.endsWith('|patient')) {
-        const strValue = result.value.value
-        allResults.push({ key, value: strValue });
+      const strValue = Buffer.from(result.value.value.toString()).toString(
+        "utf8"
+      );
+
+      let record;
+      try {
+        record = JSON.parse(strValue);
+      } catch (error) {
+        console.log(error);
+        record = strValue;
+      }
+
+      if (key.endsWith('|patient')) {
+        allResults.push(record);
       }
 
       result = await iterator.next();
@@ -34,29 +45,43 @@ class MCContract extends Contract {
   }
 
   async getPatient(ctx, key) {
-    const allResults = [];
+    const prescriptions = [];
 
     const buffer = await ctx.stub.getState(`${key}|patient`);
     if (!buffer || !buffer.length)
       return { success: false, message: `The patient with ID ${key} does not exist` };
 
+    const payload = JSON.parse(buffer.toString())
+
     const iterator = await ctx.stub.getStateByRange("", "");
     let result = await iterator.next();
     while (!result.done) {
       const key = result.value.key
-      if (result.value && key.endsWith(`${key}|prescription`)) {
-        const strValue = result.value.value
-        allResults.push({ key, value: strValue });
+      const strValue = Buffer.from(result.value.value.toString()).toString(
+        "utf8"
+      );
+
+      let record;
+      try {
+        record = JSON.parse(strValue);
+      } catch (error) {
+        console.log(error);
+        record = strValue;
+      }
+
+      if (key.endsWith(`|${key}|prescription`)) {
+        prescriptions.push(record);
       }
 
       result = await iterator.next();
     }
 
-    return { success: true, payload: buffer, prescriptions: allResults };
+    return { success: true, payload, prescriptions };
   }
 
   async setPatient(ctx, key, value) {
-    await ctx.stub.putState(`${key}|patient`, value);
+    const buffer = Buffer.from(JSON.stringify(value));
+    await ctx.stub.putState(`${key}|patient`, buffer);
 
     const message = `Patient ${key} is registered successfully!`;
     return { success: true, message };
@@ -81,9 +106,20 @@ class MCContract extends Contract {
     let result = await iterator.next();
     while (!result.done) {
       const key = result.value.key
-      if (result.value && key.endsWith('`|prescription')) {
-        const strValue = result.value.value
-        allResults.push({ key, value: strValue });
+      const strValue = Buffer.from(result.value.value.toString()).toString(
+        "utf8"
+      );
+
+      let record;
+      try {
+        record = JSON.parse(strValue);
+      } catch (error) {
+        console.log(error);
+        record = strValue;
+      }
+
+      if (key.endsWith('|prescription')) {
+        allResults.push(record);
       }
 
       result = await iterator.next();

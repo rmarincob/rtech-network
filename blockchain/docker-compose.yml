@@ -506,9 +506,3 @@ volumes:
   peer1_patient_rtech_com:
     name: peer1_patient_rtech_com
     driver: local
-  pgdata:
-    name: pgdata
-    driver: local
-  walletstore:
-    name: walletstore
-    driver: local
