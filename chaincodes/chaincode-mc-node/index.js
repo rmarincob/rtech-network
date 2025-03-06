@@ -12,164 +12,112 @@ class MCContract extends Contract {
     // function that will be invoked on chaincode instantiation
   }
 
-  encryptData(data, key) {
-    const iv = crypto.randomBytes(16);
-
-    const cipher = crypto.createCipheriv("aes-256-cbc", Buffer.from(key, "hex"), iv);
-    let encrypted = cipher.update(data, "utf8", "hex");
-    encrypted += cipher.final("hex");
-
-    return `${iv.toString("hex")}:${encrypted}`;
-  }
-
-  decryptData(data, key) {
-    const [iv, encrypted] = data.split(":");
-
-    const decipher = crypto.createDecipheriv("aes-256-cbc", Buffer.from(key, "hex"), Buffer.from(iv, "hex"));
-    let decrypted = decipher.update(encrypted, "hex", "utf8");
-    decrypted += decipher.final("utf8");
-
-    return decrypted;
-  }
-
-  generateMaskValue(value, countStart, countEnd, symbol = 'X') {
-    const lengthValue = value.length
-    const startValue = value.slice(0, countStart)
-    const endValue = value.slice(-countEnd)
-
-    const completeValue = symbol.repeat(lengthValue - (countStart + countEnd))
-
-    return `${startValue}${completeValue}${endValue}`
-  }
-
   /////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////// PATIENT RELATED CHAINCODE /////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////
-  async getPatient(ctx, key, dniMask) {
-    const buffer = await ctx.stub.getState(dniMask);
-    if (!buffer || !buffer.length)
-      return { success: false, message: `The patient with ID ${patientId} does not exist` };
+  async getAllPatient(ctx) {
+    const allResults = [];
 
-    const payload = JSON.parse(this.decryptData(buffer.toString(), key));
-    return { success: true, payload };
+    const iterator = await ctx.stub.getStateByRange("", "");
+    let result = await iterator.next();
+    while (!result.done) {
+      const key = result.value.key
+      if (result.value && key.endsWith('|patient')) {
+        const strValue = result.value.value
+        allResults.push({ key, value: strValue });
+      }
+
+      result = await iterator.next();
+    }
+
+    return JSON.stringify(allResults);
   }
 
-  async setPatient(ctx, key, dni, email, birthday, gender, bloodType, height) {
-    const dniMask = generateMaskValue(dni, 2, 3)
-    const emailMask = generateMaskValue(email, 3, 4, 'x')
+  async getPatient(ctx, key) {
+    const allResults = [];
 
-    const newPatient = {
-      patientId: uuidv4(),
-      dni: dniMask,
-      name: faker.person.firstName(),
-      lastName: faker.person.lastName(),
-      fullname: faker.person.fullName(),
-      email: emailMask,
-      address: faker.location.streetAddress(),
-      secondaryAddress: faker.location.secondaryAddress(),
-      birthday,
-      gender,
-      bloodType,
-      height,
-      orgName: "patient",
-      medicalRecords: [],
-    };
+    const buffer = await ctx.stub.getState(`${key}|patient`);
+    if (!buffer || !buffer.length)
+      return { success: false, message: `The patient with ID ${key} does not exist` };
 
-    const buffer = Buffer.from(JSON.stringify(newPatient));
-    await ctx.stub.putState(dniMask, this.encryptData(buffer, key));
+    const iterator = await ctx.stub.getStateByRange("", "");
+    let result = await iterator.next();
+    while (!result.done) {
+      const key = result.value.key
+      if (result.value && key.endsWith(`${key}|prescription`)) {
+        const strValue = result.value.value
+        allResults.push({ key, value: strValue });
+      }
 
-    const message = `Patient ${dni} is registered successfully!`;
+      result = await iterator.next();
+    }
+
+    return { success: true, payload: buffer, prescriptions: allResults };
+  }
+
+  async setPatient(ctx, key, value) {
+    await ctx.stub.putState(`${key}|patient`, value);
+
+    const message = `Patient ${key} is registered successfully!`;
     return { success: true, message };
   }
 
-  async setPatient(ctx, dniMask) {
-    const buffer = await ctx.stub.getState(dniMask);
+  async deletedPatient(ctx, key) {
+    const buffer = await ctx.stub.getState(`${key}|patient`);
     if (!buffer || !buffer.length)
-      return { success: false, message: `The patient with ID ${patientId} does not exist` };
+      return { success: false, message: `The patient with ID ${key} does not exist` };
 
-    await ctx.stub.deleteState(assetId);
-    return `The patient ${assetId} deleted successfully!`;
-  }
-
-  /////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////// DOCTOR RELATED CHAINCODE //////////////////////////////////
-  /////////////////////////////////////////////////////////////////////////////////////////
-  async getDoctor(ctx, dni) {
-    const buffer = await ctx.stub.getState(dni);
-
-    if (!buffer || !buffer.length)
-      return { success: false, message: `The doctor with ID ${dni} does not exist` };
-
-    const payload = JSON.parse(buffer.toString());
-    return { success: true, payload };
-  }
-
-  async setDoctor(ctx, dni, name, lastName, email, address, contact, specialty) {
-    const newDoctor = {
-      doctorId: uuidv4(),
-      dni,
-      name,
-      lastName,
-      email,
-      address,
-      contact,
-      specialty,
-      orgName: "doctor",
-      prescriptions: []
-    };
-
-    const buffer = Buffer.from(JSON.stringify(newDoctor));
-    await ctx.stub.putState(dni, buffer);
-
-    const message = `Doctor ${dni} is registered successfully!`;
-    return { success: true, message };
+    await ctx.stub.deleteState(`${key}|patient`);
+    return `The patient ${key} deleted successfully!`;
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////// PRESCRIBE MEDICINE ///////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////
-  async getPrescription(ctx, recordId) {
-    const buffer = await ctx.stub.getState(recordId);
+  async getAllPrescription(ctx) {
+    const allResults = [];
+
+    const iterator = await ctx.stub.getStateByRange("", "");
+    let result = await iterator.next();
+    while (!result.done) {
+      const key = result.value.key
+      if (result.value && key.endsWith('`|prescription')) {
+        const strValue = result.value.value
+        allResults.push({ key, value: strValue });
+      }
+
+      result = await iterator.next();
+    }
+
+    return JSON.stringify(allResults);
+  }
+
+  async getPrescription(ctx, id) {
+    const buffer = await ctx.stub.getState(id);
 
     if (!buffer || !buffer.length)
-      return { success: false, message: `The prescription with ID ${recordId} does not exist` };
+      return { success: false, message: `The prescription with ID ${id} does not exist` };
 
     const payload = JSON.parse(buffer.toString());
     return { success: true, payload }
   }
 
-  async setPrescription(ctx, key, doctorDni, patientDni, diagnosis, medicines, createdAt) {
-    const recordId = uuidv4();
+  async setPrescription(ctx, document, reason, diagnosis, medicines, observations, createdAt) {
+    const id = uuidv4();
 
-    const newPrescription = {
-      recordId,
-      doctorDni,
-      patientDni,
+    const prescription = {
+      document,
+      reason,
       diagnosis,
       medicines: JSON.stringify(medicines),
+      observations: JSON.stringify(observations),
       createdAt,
     };
 
-    const buffer = Buffer.from(JSON.stringify(newPrescription));
-    await ctx.stub.putState(recordId, buffer);
+    const buffer = Buffer.from(JSON.stringify(prescription));
+    await ctx.stub.putState(`${id}|${document}|prescription`, buffer);
 
-    // update patient's medical records
-    const patient = await this.getPatient(ctx, key, patientDni);
-    if (!patient.success) return patient;
-
-    patient.payload.medicalRecords.push(newPrescription);
-    const patientBuffer = Buffer.from(JSON.stringify(patient.payload));
-    await ctx.stub.putState(patientDni, this.encryptData(patientBuffer, key));
-
-    // update doctor's prescriptions
-    const doctor = await this.getDoctor(ctx, doctorDni);
-    if (!doctor.success) return doctor;
-
-    doctor.payload.prescriptions.push(newPrescription);
-    const doctorBuffer = Buffer.from(JSON.stringify(doctor.payload));
-    await ctx.stub.putState(doctorDni, doctorBuffer);
-
-    const message = `Prescription ${recordId} is registered successfully!`;
+    const message = `Prescription ${id} is registered successfully!`;
     return { success: true, message };
   }
 }
