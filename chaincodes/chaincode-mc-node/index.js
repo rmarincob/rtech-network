@@ -56,7 +56,7 @@ class MCContract extends Contract {
     const iterator = await ctx.stub.getStateByRange("", "");
     let result = await iterator.next();
     while (!result.done) {
-      const key = result.value.key
+      const strKey = result.value.key
       const strValue = Buffer.from(result.value.value.toString()).toString(
         "utf8"
       );
@@ -69,7 +69,7 @@ class MCContract extends Contract {
         record = strValue;
       }
 
-      if (key.endsWith(`|${key}|prescription`)) {
+      if (strKey.endsWith(`|${key}|prescription`)) {
         prescriptions.push(record);
       }
 
