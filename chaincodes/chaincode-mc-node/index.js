@@ -35,7 +35,7 @@ class MCContract extends Contract {
       }
 
       if (key.endsWith('|patient')) {
-        allResults.push(JSON.stringify({ key, value: record }));
+        allResults.push({ key, value: record });
       }
 
       result = await iterator.next();
