@@ -119,7 +119,7 @@ class MCContract extends Contract {
       }
 
       if (key.endsWith('|prescription')) {
-        allResults.push(record);
+        allResults.push({ key, ...record });
       }
 
       result = await iterator.next();
