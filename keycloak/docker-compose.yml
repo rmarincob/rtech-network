@@ -1,0 +1,22 @@
+services:
+  keycloak.rtech.com:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: keycloak.rtech.com
+    container_name: keycloak.rtech.com
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
+    ports:
+      - 8081:8080
+      - 8443:8443
+      - 9000:9000
+    restart: always
+    command: ["start"]
+    networks:
+      - rtech-network
+
+networks:
+  rtech-network:
+    external: true
