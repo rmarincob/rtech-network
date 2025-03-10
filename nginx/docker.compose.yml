@@ -1,0 +1,16 @@
+services:
+  nginx.rtech.com:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nginx.rtech.com
+    container_name: nginx.rtech.com
+    ports:
+      - 5000:5000
+    restart: always
+    networks:
+      - rtech-network
+
+networks:
+  rtech-network:
+    external: true
