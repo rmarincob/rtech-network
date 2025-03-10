@@ -6,7 +6,7 @@ services:
     image: nginx.rtech.com
     container_name: nginx.rtech.com
     ports:
-      - 5000:5000
+      - 80:80
     restart: always
     networks:
       - rtech-network
