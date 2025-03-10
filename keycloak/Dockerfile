@@ -12,14 +12,15 @@ ENV KC_HTTP_ENABLED=true
 ENV KC_HTTP_PORT=8080
 
 # Enable health and metrics support
-ENV KC_HEALTH_ENABLED=true
-ENV KC_METRICS_ENABLED=true
+#ENV KC_HEALTH_ENABLED=true
+#ENV KC_METRICS_ENABLED=true
 
 # Configure a database vendor
 ENV KC_HOSTNAME=localhost
 
 ENV KC_DB=postgres
 ENV KC_DB_URL=postgresql.rtech.com
+ENV KC_DB_URL_PORT=5432
 ENV KC_DB_URL_DATABASE=security
 ENV KC_DB_SCHEMA=keycloak
 ENV KC_DB_USERNAME=postgres
