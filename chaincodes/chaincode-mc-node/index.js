@@ -47,7 +47,7 @@ class MCContract extends Contract {
   async getPatient(ctx, key) {
     const prescriptions = [];
 
-    const buffer = await ctx.stub.getState(`${key}|patient`);
+    const buffer = await ctx.stub.getState(`${key}`);
     if (!buffer || !buffer.length)
       return { success: false, message: `The patient with ID ${key} does not exist` };
 
@@ -69,7 +69,9 @@ class MCContract extends Contract {
         record = strValue;
       }
 
-      if (strKey.endsWith(`|${key}|prescription`)) {
+      const docSplit = key.split('|')
+      const newDocumentKey = `${docSplit[0]}|${docSplit[1]}`
+      if (strKey.endsWith(`|${newDocumentKey}|prescription`)) {
         prescriptions.push(record);
       }
 
@@ -81,18 +83,18 @@ class MCContract extends Contract {
 
   async setPatient(ctx, key, value) {
     const buffer = Buffer.from(JSON.stringify(value));
-    await ctx.stub.putState(`${key}|patient`, buffer);
+    await ctx.stub.putState(`${key}`, buffer);
 
     const message = `Patient ${key} is registered successfully!`;
     return { success: true, message };
   }
 
   async deletedPatient(ctx, key) {
-    const buffer = await ctx.stub.getState(`${key}|patient`);
+    const buffer = await ctx.stub.getState(`${key}`);
     if (!buffer || !buffer.length)
       return { success: false, message: `The patient with ID ${key} does not exist` };
 
-    await ctx.stub.deleteState(`${key}|patient`);
+    await ctx.stub.deleteState(`${key}`);
     return `The patient ${key} deleted successfully!`;
   }
 
@@ -150,8 +152,11 @@ class MCContract extends Contract {
       createdAt,
     };
 
+    const docSplit = document.split('|')
+    const key = `${docSplit[0]}|${docSplit[1]}`
+
     const buffer = Buffer.from(JSON.stringify(prescription));
-    await ctx.stub.putState(`${id}|${document}|prescription`, buffer);
+    await ctx.stub.putState(`${id}|${key}|prescription`, buffer);
 
     const message = `Prescription ${id} is registered successfully!`;
     return { success: true, message };
