@@ -18,11 +18,4 @@ ENV KC_METRICS_ENABLED=true
 # Configure a database vendor
 ENV KC_HOSTNAME=localhost
 
-ENV KC_DB=postgres
-ENV KC_DB_URL_HOST=postgresql.rtech.com
-ENV KC_DB_URL_PORT=5432
-ENV KC_DB_URL_DATABASE=security
-ENV KC_DB_SCHEMA=keycloak
-ENV KC_DB_USERNAME=postgres
-
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
