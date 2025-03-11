@@ -2,6 +2,7 @@ services:
   orderer0.rtech.com:
     image: hyperledger/fabric-orderer:2.5.11
     container_name: orderer0.rtech.com
+    restart: always
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
@@ -35,6 +36,7 @@ services:
   orderer1.rtech.com:
     image: hyperledger/fabric-orderer:2.5.11
     container_name: orderer1.rtech.com
+    restart: always
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
@@ -68,6 +70,7 @@ services:
   orderer2.rtech.com:
     image: hyperledger/fabric-orderer:2.5.11
     container_name: orderer2.rtech.com
+    restart: always
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
@@ -101,6 +104,7 @@ services:
   ca.doctor.rtech.com:
     image: hyperledger/fabric-ca:1.5.14
     container_name: ca.doctor.rtech.com
+    restart: always
     environment:
       # - FABRIC_LOGGING_SPEC=INFO
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
@@ -123,6 +127,7 @@ services:
     container_name: cli.doctor.rtech.com
     tty: true
     stdin_open: true
+    restart: always
     environment:
       - GOPATH=/opt/gopath
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -160,6 +165,7 @@ services:
   couchdb.peer0.doctor.rtech.com:
     image: couchdb:latest
     container_name: couchdb.peer0.doctor.rtech.com
+    restart: always
     environment:
       - COUCHDB_USER=${COUCHDB_USERNAME}
       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
@@ -173,6 +179,7 @@ services:
   peer0.doctor.rtech.com:
     image: hyperledger/fabric-peer:2.5.11
     container_name: peer0.doctor.rtech.com
+    restart: always
     environment:
       # - FABRIC_CFG_PATH=$PWD
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -223,6 +230,7 @@ services:
   couchdb.peer1.doctor.rtech.com:
     image: couchdb:latest
     container_name: couchdb.peer1.doctor.rtech.com
+    restart: always
     environment:
       - COUCHDB_USER=${COUCHDB_USERNAME}
       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
@@ -236,6 +244,7 @@ services:
   peer1.doctor.rtech.com:
     image: hyperledger/fabric-peer:2.5.11
     container_name: peer1.doctor.rtech.com
+    restart: always
     environment:
       # - FABRIC_CFG_PATH=$PWD
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -286,6 +295,7 @@ services:
   ca.patient.rtech.com:
     image: hyperledger/fabric-ca:1.5.14
     container_name: ca.patient.rtech.com
+    restart: always
     environment:
       # - FABRIC_LOGGING_SPEC=INFO
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
@@ -308,6 +318,7 @@ services:
     container_name: cli.patient.rtech.com
     tty: true
     stdin_open: true
+    restart: always
     environment:
       - GOPATH=/opt/gopath
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -345,6 +356,7 @@ services:
   couchdb.peer0.patient.rtech.com:
     image: couchdb:latest
     container_name: couchdb.peer0.patient.rtech.com
+    restart: always
     environment:
       - COUCHDB_USER=${COUCHDB_USERNAME}
       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
@@ -358,6 +370,7 @@ services:
   peer0.patient.rtech.com:
     image: hyperledger/fabric-peer:2.5.11
     container_name: peer0.patient.rtech.com
+    restart: always
     environment:
       # - FABRIC_CFG_PATH=$PWD
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -408,6 +421,7 @@ services:
   couchdb.peer1.patient.rtech.com:
     image: couchdb:latest
     container_name: couchdb.peer1.patient.rtech.com
+    restart: always
     environment:
       - COUCHDB_USER=${COUCHDB_USERNAME}
       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
@@ -421,6 +435,7 @@ services:
   peer1.patient.rtech.com:
     image: hyperledger/fabric-peer:2.5.11
     container_name: peer1.patient.rtech.com
+    restart: always
     environment:
       # - FABRIC_CFG_PATH=$PWD
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock

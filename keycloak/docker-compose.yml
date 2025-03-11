@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
     image: keycloak.rtech.com
     container_name: keycloak.rtech.com
+    restart: always
     environment:
       - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
       - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
@@ -13,7 +14,6 @@ services:
       - 8081:8081
       - 8443:8443
       - 9000:9000
-    restart: always
     command: ["start-dev"]
     networks:
       - rtech-network

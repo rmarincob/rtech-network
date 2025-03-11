@@ -1,7 +1,8 @@
 services:
   apirest.doctor.rtech.com:
-    container_name: apirest.doctor.rtech.com
     image: ghcr.io/fablo-io/fablo-rest:latest
+    container_name: apirest.doctor.rtech.com
+    restart: always
     environment:
       - PORT=8000
       - MSP_ID=doctorMSP
@@ -19,8 +20,9 @@ services:
       - rtech-network
 
   apirest.patient.rtech.com:
-    container_name: apirest.patient.rtech.com
     image: ghcr.io/fablo-io/fablo-rest:latest
+    container_name: apirest.patient.rtech.com
+    restart: always
     environment:
       - PORT=8000
       - MSP_ID=patientMSP

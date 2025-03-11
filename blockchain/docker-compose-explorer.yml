@@ -3,6 +3,7 @@ services:
     image: ghcr.io/hyperledger-labs/explorer-db:latest
     container_name: explorerdb.rtech.com
     hostname: explorerdb.rtech.com
+    restart: always
     environment:
       - DATABASE_DATABASE=${DATABASE_DATABASE}
       - DATABASE_USERNAME=${DATABASE_USERNAME}
@@ -23,6 +24,7 @@ services:
     image: ghcr.io/hyperledger-labs/explorer:latest
     container_name: explorer.rtech.com
     hostname: explorer.rtech.com
+    restart: always
     environment:
       - DATABASE_HOST=explorerdb.rtech.com
       - DATABASE_DATABASE=${DATABASE_DATABASE}

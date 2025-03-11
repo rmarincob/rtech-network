@@ -5,9 +5,9 @@ services:
       dockerfile: Dockerfile
     image: nginx.rtech.com
     container_name: nginx.rtech.com
+    restart: always
     ports:
       - 80:80
-    restart: always
     networks:
       - rtech-network
 
